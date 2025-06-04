@@ -1,1 +1,1 @@
-# codenotes-ui
+# Codenotes client
