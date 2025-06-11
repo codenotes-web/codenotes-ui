@@ -16,36 +16,53 @@ type CodeAction = 'tabulation'
 
 const inputValue = ref('')
 const displayedCodeRef = useTemplateRef<HTMLDivElement>('displayedCode')
+const inputCodeRef = useTemplateRef<HTMLDivElement>('inputCode')
 
-function assertRefDivElement(element: unknown): asserts element is HTMLDivElement {
-  if (!(element instanceof HTMLDivElement)) {
-    throw new AssertionError('The element is not div')
+function assertRefElement<T extends HTMLElement>(
+  element: unknown, ctor: new(...args: any[]) => T
+): asserts element is T {
+  if (!(element instanceof ctor)) {
+    throw new AssertionError(`The element is not ${ ctor.name }`)
   }
 }
 
 const handleInput = (event: Event) => {
-  assertRefDivElement(displayedCodeRef.value)
+  assertRefElement(displayedCodeRef.value, HTMLDivElement)
+  assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
+
   const inputEvent = event as InputEvent
-  inputValue.value = (inputEvent.target as HTMLTextAreaElement).value
-  displayedCodeRef.value.innerText = inputValue.value
+  let inputElValue = (inputEvent.target as HTMLTextAreaElement).value
+
+  const inputInitialSelectionEnd = inputCodeRef.value.selectionStart
+
+  // fixes double space dot appearance
+  if (inputEvent.data === '. ') {
+    const dotLocationIdx = inputInitialSelectionEnd - 2
+    inputElValue = `${ inputElValue.substring(0, dotLocationIdx) }  ${ inputElValue.substring(inputInitialSelectionEnd + 1) }`
+  }
+
+  inputValue.value = inputElValue
+  inputCodeRef.value.value = inputElValue
+  displayedCodeRef.value.innerText = inputElValue
 }
 
 const handleAction = (action: CodeAction) => {
-  if (displayedCodeRef.value) {
-    switch (action) {
-      case 'tabulation':
-        displayedCodeRef.value.innerText += '  '
-    }
-  }
+  // if (displayedCodeRef.value) {
+  //   switch (action) {
+  //     case 'tabulation':
+  //       displayedCodeRef.value.innerText += '  '
+  //   }
+  // }
 }
 
-const syncedClasses = 'p-2'
+const syncedClasses = 'p-2 whitespace-pre'
 
 </script>
 
 <template>
   <div class="relative h-full font-['Consolas',_monospace]">
     <textarea
+      ref="inputCode"
       class="editor-textarea absolute left-0 right-0 text-transparent caret-slate-700 z-10 resize-none w-full h-full"
       :class="syncedClasses"
       @input="handleInput"
