@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { AssertionError } from '@/core/errors/assertion-error'
-import { ref, useTemplateRef } from 'vue'
+import { nextTick, ref, useTemplateRef } from 'vue'
 /**
  * TODO
  * 1. Нужно продумать данные
@@ -9,7 +9,7 @@ import { ref, useTemplateRef } from 'vue'
  * 2. Нужно разобраться с вводом элементов из ClipBoard - возможно проводить санитайзинг
  *  1.1 Нужно понимать, что является действительно тегами, а что нет (например let a = '<div>Я просто строка</div>')
  * 3. Продумать TAB чтобы был отступ
- * 4.
+ * 4. Fix scrolling
  */
 
 type CodeAction = 'tabulation'
@@ -32,7 +32,6 @@ const handleInput = (event: Event) => {
 
   const inputEvent = event as InputEvent
   let currentValue = inputCodeRef.value.value
-
   const cursorPosition = inputCodeRef.value.selectionEnd
 
   // fixes double space dot appearance
@@ -53,10 +52,15 @@ const handleAction = (action: CodeAction) => {
     case 'tabulation': {
       let currentValue = inputCodeRef.value.value
       const cursorPosition = inputCodeRef.value.selectionEnd
-      currentValue = `${ currentValue.substring(0, cursorPosition) }  ${ currentValue.substring(cursorPosition + 1) }`
+      currentValue = `${ currentValue.substring(0, cursorPosition) }  ${ currentValue.substring(cursorPosition) }`
 
       inputValue.value = currentValue
       displayedCodeRef.value.innerText = currentValue
+      nextTick(() => {
+        assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
+        const TAB_INDENT = 2
+        inputCodeRef.value.setSelectionRange(cursorPosition + TAB_INDENT, cursorPosition + TAB_INDENT)
+      })
     }
   }
 }
