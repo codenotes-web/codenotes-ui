@@ -31,28 +31,34 @@ const handleInput = (event: Event) => {
   assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
 
   const inputEvent = event as InputEvent
-  let inputElValue = (inputEvent.target as HTMLTextAreaElement).value
+  let currentValue = inputCodeRef.value.value
 
-  const inputInitialSelectionEnd = inputCodeRef.value.selectionStart
+  const cursorPosition = inputCodeRef.value.selectionEnd
 
   // fixes double space dot appearance
   if (inputEvent.data === '. ') {
-    const dotLocationIdx = inputInitialSelectionEnd - 2
-    inputElValue = `${ inputElValue.substring(0, dotLocationIdx) }  ${ inputElValue.substring(inputInitialSelectionEnd + 1) }`
+    const dotLocationIdx = cursorPosition - 2
+    currentValue = `${ currentValue.substring(0, dotLocationIdx) }  ${ currentValue.substring(cursorPosition + 1) }`
   }
 
-  inputValue.value = inputElValue
-  inputCodeRef.value.value = inputElValue
-  displayedCodeRef.value.innerText = inputElValue
+  inputValue.value = currentValue
+  displayedCodeRef.value.innerText = currentValue
 }
 
 const handleAction = (action: CodeAction) => {
-  // if (displayedCodeRef.value) {
-  //   switch (action) {
-  //     case 'tabulation':
-  //       displayedCodeRef.value.innerText += '  '
-  //   }
-  // }
+  assertRefElement(displayedCodeRef.value, HTMLDivElement)
+  assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
+
+  switch (action) {
+    case 'tabulation': {
+      let currentValue = inputCodeRef.value.value
+      const cursorPosition = inputCodeRef.value.selectionEnd
+      currentValue = `${ currentValue.substring(0, cursorPosition) }  ${ currentValue.substring(cursorPosition + 1) }`
+
+      inputValue.value = currentValue
+      displayedCodeRef.value.innerText = currentValue
+    }
+  }
 }
 
 const syncedClasses = 'p-2 whitespace-pre'
