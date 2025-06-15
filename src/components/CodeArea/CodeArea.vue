@@ -10,7 +10,7 @@ import { nextTick, ref, useTemplateRef } from 'vue'
 
 type CodeAction = 'tabulation'
 
-const syncedClasses = 'p-2 whitespace-pre'
+const syncedClasses = 'p-2 whitespace-pre text-sm text-slate-600'
 
 const inputValue = ref('')
 const displayedCodeRef = useTemplateRef<HTMLDivElement>('displayedCode')

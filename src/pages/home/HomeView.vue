@@ -1,7 +1,11 @@
 <script setup lang="ts">
 import Header from '@/components/Header/Header.vue'
 import CodeArea from '@components/CodeArea/CodeArea.vue'
-
+import {
+  ResizableHandle,
+  ResizablePanel,
+  ResizablePanelGroup
+} from '@/components/ui/resizable'
 
 </script>
 
@@ -16,22 +20,18 @@ import CodeArea from '@components/CodeArea/CodeArea.vue'
       Sidebar content
     </aside>
 
-    <!-- Editor and results area -->
     <div class="flex-1 flex flex-col min-h-0">
-      <!-- Code editor (scrollable if needed) -->
-      <div class="flex-1 border-b overflow-auto">
-        <CodeArea />
-      </div>
-
-      <!-- Results (scrollable if needed) -->
-      <div class="flex-1 overflow-auto">
-      </div>
+      <ResizablePanelGroup direction="vertical">
+        <ResizablePanel>
+          <CodeArea />
+        </ResizablePanel>
+        <ResizableHandle />
+        <ResizablePanel />
+      </ResizablePanelGroup>
     </div>
   </div>
 
-  <!-- Fixed footer -->
   <footer class="h-8 border-t flex-none">
-    Footer content
   </footer>
 </div>
 </template>
