@@ -42,7 +42,8 @@ const handleInput = (event: Event) => {
   inputValue.value = currentValue
   displayedCodeRef.value.innerText = currentValue
 
-  if (currentValue.endsWith('\n') && !inputEvent.data) {
+  console.log(inputEvent.data)
+  if (currentValue.endsWith('\n')) {
     displayedCodeRef.value.appendChild(document.createElement('br'))
   }
 }
@@ -69,10 +70,15 @@ const handleAction = (action: CodeAction) => {
 }
 
 const handleScroll = () => {
-  assertRefElement(displayedCodeRef.value, HTMLDivElement)
-  assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
+  if (window.editorScrollTimeout) {
+    cancelAnimationFrame(window.editorScrollTimeout)
+  }
+  window.editorScrollTimeout = requestAnimationFrame(() => {
+    assertRefElement(displayedCodeRef.value, HTMLDivElement)
+    assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
 
-  displayedCodeRef.value.scrollTop = inputCodeRef.value.scrollTop
+    displayedCodeRef.value.scrollTop = inputCodeRef.value.scrollTop
+  })
 }
 </script>
 
@@ -84,11 +90,11 @@ const handleScroll = () => {
       :class="syncedClasses"
       @input="handleInput"
       @keydown.tab.prevent="handleAction('tabulation')"
-      @scroll="handleScroll"
+      @scroll.passive="handleScroll"
       class="editor-textarea absolute left-0 right-0 caret-slate-700 z-10 resize-none w-full h-full"
     >
     </textarea>
-    <div ref="displayedCode" :class="syncedClasses" class="overflow-y-scroll h-full"></div>
+    <div ref="displayedCode" :class="syncedClasses" class="h-full overflow-y-scroll"></div>
   </div>
 </template>
 
