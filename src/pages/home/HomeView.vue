@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import Header from '@/components/Header/Header.vue'
 import CodeArea from '@components/CodeArea/CodeArea.vue'
 
 
@@ -6,10 +7,7 @@ import CodeArea from '@components/CodeArea/CodeArea.vue'
 
 <template>
 <div class="flex flex-col h-screen">
-  <!-- Fixed header -->
-  <header class="h-16 border-b flex-none">
-    Header content
-  </header>
+  <Header />
 
   <!-- Main content area (will scroll) -->
   <div class="flex flex-1 min-h-0 overflow-auto">
