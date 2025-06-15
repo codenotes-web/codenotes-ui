@@ -3,16 +3,14 @@ import { AssertionError } from '@/core/errors/assertion-error'
 import { nextTick, ref, useTemplateRef } from 'vue'
 /**
  * TODO
- * 1. Нужно продумать данные
- *  1.1 То что видит пользователь - элементы внутри корневого div - будут подсвечиваться конкретными цветами (классами)
- *  1.2 Чтоб понимать, какие элементы надо подсветить - нужен парсер
- * 2. Нужно разобраться с вводом элементов из ClipBoard - возможно проводить санитайзинг
- *  1.1 Нужно понимать, что является действительно тегами, а что нет (например let a = '<div>Я просто строка</div>')
- * 3. Продумать TAB чтобы был отступ
- * 4. Fix scrolling
+ * 1. Fix scrolling - overflow-y-scroll у дисплея можно убрать
+ * 2. Вынести в отдельный css layer
+ * 3. Посмотреть как можно оптимизировать синк при скролле
  */
 
 type CodeAction = 'tabulation'
+
+const syncedClasses = 'p-2 whitespace-pre'
 
 const inputValue = ref('')
 const displayedCodeRef = useTemplateRef<HTMLDivElement>('displayedCode')
@@ -32,6 +30,7 @@ const handleInput = (event: Event) => {
 
   const inputEvent = event as InputEvent
   let currentValue = inputCodeRef.value.value
+
   const cursorPosition = inputCodeRef.value.selectionEnd
 
   // fixes double space dot appearance
@@ -42,6 +41,10 @@ const handleInput = (event: Event) => {
 
   inputValue.value = currentValue
   displayedCodeRef.value.innerText = currentValue
+
+  if (currentValue.endsWith('\n') && !inputEvent.data) {
+    displayedCodeRef.value.appendChild(document.createElement('br'))
+  }
 }
 
 const handleAction = (action: CodeAction) => {
@@ -65,22 +68,27 @@ const handleAction = (action: CodeAction) => {
   }
 }
 
-const syncedClasses = 'p-2 whitespace-pre'
+const handleScroll = () => {
+  assertRefElement(displayedCodeRef.value, HTMLDivElement)
+  assertRefElement(inputCodeRef.value, HTMLTextAreaElement)
 
+  displayedCodeRef.value.scrollTop = inputCodeRef.value.scrollTop
+}
 </script>
 
 <template>
   <div class="relative h-full font-['Consolas',_monospace]">
     <textarea
       ref="inputCode"
-      class="editor-textarea absolute left-0 right-0 text-transparent caret-slate-700 z-10 resize-none w-full h-full"
+      :value="inputValue"
       :class="syncedClasses"
       @input="handleInput"
-      :value="inputValue"
       @keydown.tab.prevent="handleAction('tabulation')"
+      @scroll="handleScroll"
+      class="editor-textarea absolute left-0 right-0 caret-slate-700 z-10 resize-none w-full h-full"
     >
     </textarea>
-    <div ref="displayedCode" :class="syncedClasses"></div>
+    <div ref="displayedCode" :class="syncedClasses" class="overflow-y-scroll h-full"></div>
   </div>
 </template>
 
