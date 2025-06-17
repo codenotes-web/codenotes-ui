@@ -1,9 +1,10 @@
 import type { AxiosInstance, InternalAxiosRequestConfig } from 'axios'
 import axios from 'axios'
+import config from '@/config'
 
 const axiosInstance: AxiosInstance = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL,
-  timeout: 10000,
+  baseURL: config.api.baseURL,
+  timeout: config.api.timeout,
   headers: {
     'Content-Type': 'application/json'
   }
