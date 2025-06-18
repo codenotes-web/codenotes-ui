@@ -1,8 +1,9 @@
-import HomeView from '@pages/home/HomeView.vue'
+import MainView from '@pages/main-view/MainView.vue'
 
+// TODO By id
 export const routes = [
   {
     path: '/',
-    component: HomeView
+    component: MainView
   }
 ]

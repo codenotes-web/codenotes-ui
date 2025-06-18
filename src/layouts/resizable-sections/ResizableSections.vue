@@ -1,32 +1,29 @@
 <script setup lang="ts">
-import Header from '@/components/Header/Header.vue'
-import CodeArea from '@components/CodeArea/CodeArea.vue'
 import {
   ResizableHandle,
   ResizablePanel,
   ResizablePanelGroup
-} from '@/components/ui/resizable'
+} from '@/core/ui/resizable'
 
 </script>
 
 <template>
 <div class="flex flex-col h-screen">
-  <Header />
-
-  <!-- Main content area (will scroll) -->
+  <slot name="header"></slot>
   <div class="flex flex-1 min-h-0 overflow-auto">
-    <!-- Fixed sidebar -->
     <aside class="w-64 border-r flex-none">
-      Sidebar content
+      <slot name="sidebar"></slot>
     </aside>
 
     <div class="flex-1 flex flex-col min-h-0">
       <ResizablePanelGroup direction="vertical">
         <ResizablePanel>
-          <CodeArea />
+          <slot name="upper-area"></slot>
         </ResizablePanel>
         <ResizableHandle />
-        <ResizablePanel />
+        <ResizablePanel>
+          <slot name="bottom-area"></slot>
+        </ResizablePanel>
       </ResizablePanelGroup>
     </div>
   </div>
