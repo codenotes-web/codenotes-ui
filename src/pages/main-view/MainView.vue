@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Header from '@/layouts/header/Header.vue'
-import CodeArea from '@/features/code-editor/code-area/CodeArea.vue'
+import CodeEditor from '@/features/code-editor/CodeEditor.vue'
 import ResizableSections from '@/layouts/resizable-sections/ResizableSections.vue'
 
 </script>
@@ -14,7 +14,7 @@ import ResizableSections from '@/layouts/resizable-sections/ResizableSections.vu
 
     </template>
     <template #upper-area>
-      <CodeArea />
+      <CodeEditor />
     </template>
 
     <template #bottom-area>
