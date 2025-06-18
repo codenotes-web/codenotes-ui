@@ -29,6 +29,7 @@ import {
   </div>
 
   <footer class="h-8 border-t flex-none">
+    <slot name="footer"></slot>
   </footer>
 </div>
 </template>

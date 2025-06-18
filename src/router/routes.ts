@@ -5,5 +5,13 @@ export const routes = [
   {
     path: '/',
     component: MainView
+  },
+  {
+    path: '/snippet/:id',
+    component: MainView
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    redirect: '/'
   }
 ]
