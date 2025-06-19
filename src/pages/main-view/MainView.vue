@@ -3,7 +3,7 @@ import Header from '@/layouts/header/Header.vue'
 import CodeEditor from '@/features/code-editor/CodeEditor.vue'
 import ResizableSections from '@/layouts/resizable-sections/ResizableSections.vue'
 import Footer from '@/layouts/footer/Footer.vue'
-import SnippetsSidebar from '@/features/snippets-navigation/sidebar/SnippetsSidebar.vue'
+import SnippetsManager from '@/features/snippets-management/SnippetsManager.vue'
 
 </script>
 
@@ -13,7 +13,7 @@ import SnippetsSidebar from '@/features/snippets-navigation/sidebar/SnippetsSide
       <Header />
     </template>
     <template #sidebar>
-      <SnippetsSidebar />
+      <SnippetsManager />
     </template>
     <template #upper-area>
       <CodeEditor />
