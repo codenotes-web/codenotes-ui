@@ -10,10 +10,8 @@ TODO:
 */
 
 const route = useRoute()
-const snippetId = route.params.id
 
-const isSnippetIdEmpty = computed(() => !snippetId)
-
+const isSnippetIdEmpty = computed(() => !route.params.id)
 
 </script>
 
