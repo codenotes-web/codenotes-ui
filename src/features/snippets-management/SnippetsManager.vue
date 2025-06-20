@@ -2,16 +2,19 @@
 import { ref } from 'vue'
 import { useRoute } from 'vue-router'
 import { mockSnippets } from './mocks'
+import AddSnippet from './add-snippet/AddSnippet.vue'
 
 const links = ref(mockSnippets)
 
-// TODO контекстаня кнопка add - на нажатие открывать инпут с вводом сниппета
 const route = useRoute()
 </script>
 
 <template>
   <nav class="h-full bg-slate-50 flex flex-col py-4 px-2 space-y-2">
-    <div class="mb-6 text-xs font-bold px-2 text-gray-400">Your workspace</div>
+    <div class="mb-6 text-xs px-2 flex items-center justify-between">
+      <span class="font-bold text-gray-400">Your workspace</span>
+      <AddSnippet />
+    </div>
     <router-link
       v-for="link in links"
       :key="link.id"
