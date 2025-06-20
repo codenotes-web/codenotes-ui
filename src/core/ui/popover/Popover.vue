@@ -16,15 +16,18 @@ const handleTrigger = () => {
 
   const triggerRect = triggerRef.value!.getBoundingClientRect()
 
-  contentRef.value!.style.top = `${ triggerRect.top + GAP }px`
+  contentRef.value!.style.top = `${ triggerRect.bottom + GAP }px`
   contentRef.value!.style.left = `${ triggerRect.right + GAP }px`
 
   isContentOpen.value = true
+}
 
+const closeContent = () => {
+  isContentOpen.value = false
 }
 
 onClickOutside(contentRef, () => {
-  isContentOpen.value = false
+  closeContent()
 })
 
 const initTriggerRef = (el: Element | ComponentPublicInstance<unknown, unknown> | null) => {
@@ -43,10 +46,19 @@ const initTriggerRef = (el: Element | ComponentPublicInstance<unknown, unknown> 
 </script>
 
 <template>
-  <slot name="trigger" :initTriggerRef="initTriggerRef" :doTrigger="handleTrigger"></slot>
+  <slot
+    name="trigger"
+    :init-trigger-ref="initTriggerRef"
+    :do-close="closeContent"
+    :do-trigger="handleTrigger"
+  ></slot>
   <Teleport to="#popovers">
-    <div class="absolute z-50 bg-white rounded-md shadow-sx" ref="content">
-      <slot v-if="isContentOpen" name="content"></slot>
+    <div @keydown.esc.stop="closeContent" class="absolute z-50 bg-white rounded-md shadow-sx" ref="content">
+      <slot
+        :do-close="closeContent"
+        v-if="isContentOpen"
+        name="content"
+      ></slot>
     </div>
   </Teleport>
 </template>
