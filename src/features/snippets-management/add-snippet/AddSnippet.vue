@@ -4,8 +4,11 @@ import { Input } from '@/core/ui/input'
 import Popover from '@/core/ui/popover/Popover.vue'
 import { ref, watch } from 'vue'
 
-const snippetInputRef = ref<InstanceType<typeof Input>>()
+const emit = defineEmits<{
+  (e: 'new-snippet', name: string): void
+}>()
 
+const snippetInputRef = ref<InstanceType<typeof Input>>()
 const snippetName = ref('')
 
 watch(snippetInputRef, (snippetInput) => {
@@ -14,7 +17,7 @@ watch(snippetInputRef, (snippetInput) => {
 })
 
 const createSnippet = (onSuccess: () => void) => {
-  // TODO: create snippet
+  emit('new-snippet', snippetName.value)
   onSuccess()
 }
 

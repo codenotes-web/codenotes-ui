@@ -1,14 +1,14 @@
 const mockSnippets = [
   {
-    id: 1,
+    id: '1',
     name: 'Closures'
   },
   {
-    id: 2,
+    id: '2',
     name: 'Promises vs set timeout'
   },
   {
-    id: 3,
+    id: '3',
     name: 'Object deep copy'
   }
 ]
