@@ -2,22 +2,29 @@
 import { useRoute, useRouter } from 'vue-router'
 import AddSnippet from './add-snippet/AddSnippet.vue'
 import { useSnippetsStore } from '@/store/snippets'
-
-const snippetsStore = useSnippetsStore()
-
-const snippets = snippetsStore.snippets
+import { computed, onBeforeMount } from 'vue'
 
 const route = useRoute()
 const router = useRouter()
+
+const snippetsStore = useSnippetsStore()
+
+const snippets = computed(() => snippetsStore.snippets)
+
+onBeforeMount(async () => {
+  await snippetsStore.initAllSnippets()
+})
 
 const handleNewSnippet = (name: string) => {
   const id = Date.now().toString()
   snippetsStore.addSnippet({
     id,
-    name
+    name,
+    code: ''
   })
   router.push(`/snippet/${ id }`)
 }
+
 </script>
 
 <template>
