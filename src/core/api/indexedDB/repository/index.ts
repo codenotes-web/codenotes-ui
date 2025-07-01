@@ -1,5 +1,5 @@
 import type { Snippet } from '@/core/types/snippets'
-import { SNIPPETS_OBJECT_STORE, localDB } from '..'
+import { SNIPPETS_OBJECT_STORE, localDB } from '../client'
 
 const addSnippet = (snippet: Snippet) => {
   return localDB.addToObjectStore(SNIPPETS_OBJECT_STORE, snippet)

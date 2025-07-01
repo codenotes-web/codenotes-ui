@@ -1,5 +1,5 @@
 import axiosInstance from '../client'
-import type { ApiResponse } from '../types'
+import type { ApiResponse } from '../../types'
 
 export class BaseService {
   protected baseUrl: string
